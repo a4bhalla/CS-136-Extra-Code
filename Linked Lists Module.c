@@ -17,13 +17,13 @@ bool is_empty(struct llnode *lst);
 struct llnode *cons(int f, struct llnode *r);
 int length_iterative(struct llnode *lst);
 struct llnode *sqr_list(struct llnode *lst);
-
-
+struct llnode *insert(int n, struct llnode *slst);
+void sqr_list_m(struct llnode *lst);
+struct llnode *copy_list(struct llnode *lst);
+void add_to_front (int n, struct llnode **ptr_front);
 
 int main(void)
 {	
-	struct llnode *lst1=cons(3, cons(3, cons(5, empty())));
-	printf("%d", length_iterative(lst1));
 }
 
 int first(struct llnode *lst)
@@ -79,4 +79,51 @@ struct llnode *sqr_list(struct llnode *lst)
 	{
 		return cons(first(lst)*first(lst), rest(lst));
 	}
+}
+
+struct llnode *insert(int n, struct llnode *slst)
+{
+	if (is_empty(slst)==true)
+	{
+		return cons(n, empty());
+	}
+	
+	if(n<=first(slst))
+	{
+		return cons(n, slst);
+	}
+	
+	else
+	{
+		return cons(first(slst), insert(n,rest(slst)));
+	}
+}
+
+void sqr_list_m(struct llnode *lst)
+{
+	while (lst!=NULL)
+	{
+		(*lst).item=(*lst).item*(*lst).item;
+		lst=(*lst).next;
+	}
+}
+
+struct llnode *copy_list(struct llnode *lst)
+{
+	if (lst==NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return cons((*lst).item, copy_list((*lst).next));
+	}
+}
+
+void add_to_front (int n, struct llnode **ptr_front)
+{
+	struct llnode *new=malloc(sizeof(struct llnode));
+	(*new).item=n;
+	(*new).next=*ptr_front;
+	*ptr_front=new;
 }
