@@ -21,6 +21,8 @@ struct llnode *insert(int n, struct llnode *slst);
 void sqr_list_m(struct llnode *lst);
 struct llnode *copy_list(struct llnode *lst);
 void add_to_front (int n, struct llnode **ptr_front);
+void remove_from_front (struct llnode **ptr_front);
+void insert_sorted(int n, struct llnode **ptr_front);
 
 int main(void)
 {	
@@ -126,4 +128,36 @@ void add_to_front (int n, struct llnode **ptr_front)
 	(*new).item=n;
 	(*new).next=*ptr_front;
 	*ptr_front=new;
+}
+
+void remove_from_front (struct llnode **ptr_front)
+{
+	struct llnode *new=malloc(sizeof(struct llnode));
+	(*new).item=first(rest(*ptr_front));
+	(*new).next=rest(rest(*ptr_front));
+	*ptr_front=new;
+}
+
+void insert_sorted(int n, struct llnode **ptr_front)
+{
+	struct llnode *cur=*ptr_front;
+	struct llnode *prev=NULL;
+	while ((cur!=NULL) && (n>(*cur).item))
+	{
+		prev=cur;
+		cur=(*cur).next;
+	}
+	
+	struct llnode *new=malloc(sizeof(struct llnode));
+	(*new).item=n;
+	(*new).next=cur;
+	if (prev==NULL)
+	{
+		*ptr_front=new;
+	}
+	else
+	{
+		(*prev).next=new;	
+	}
+	
 }
